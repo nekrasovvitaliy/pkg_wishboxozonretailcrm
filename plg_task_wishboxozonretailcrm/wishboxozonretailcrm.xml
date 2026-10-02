@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="task" method="upgrade">
+	<name>plg_task_wishboxozonretailcrm</name>
+	<author>Nekrasov Vitaliy</author>
+	<creationDate>October 2026</creationDate>
+	<authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+	<version>1.0.0</version>
+	<description>PLG_TASK_WISHBOXOZONRETAILCRM_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\Task\WishboxOzonRetailCrm</namespace>
+	<scriptfile>script.php</scriptfile>
+	<files>
+		<folder plugin="wishboxozonretailcrm">services</folder>
+		<folder>forms</folder>
+		<folder>src</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/plg_task_wishboxozonretailcrm.ini</language>
+		<language tag="en-GB">language/en-GB/plg_task_wishboxozonretailcrm.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/plg_task_wishboxozonretailcrm.ini</language>
+		<language tag="ru-RU">language/ru-RU/plg_task_wishboxozonretailcrm.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="ozon" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELDSET_OZON_LABEL">
+				<field name="ozon_client_id" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_CLIENT_ID_LABEL" required="true" filter="raw" />
+				<field name="ozon_api_key" type="password" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_API_KEY_LABEL" required="true" filter="raw" />
+				<field name="ozon_api_url" type="url" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_API_URL_LABEL" default="https://api-seller.ozon.ru" required="true" filter="raw" />
+				<field name="ozon_warehouse_id" type="number" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_WAREHOUSE_ID_LABEL" required="true" min="1" filter="integer" />
+				<field name="ozon_currency_code" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_CURRENCY_LABEL" default="RUB" required="true" filter="cmd" />
+			</fieldset>
+			<fieldset name="retailcrm" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELDSET_RETAILCRM_LABEL">
+				<field name="retailcrm_api_url" type="url" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_API_URL_LABEL" required="true" filter="raw" />
+				<field name="retailcrm_proxy_token" type="password" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_PROXY_TOKEN_LABEL" filter="raw" />
+				<field name="retailcrm_api_key" type="password" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_API_KEY_LABEL" required="true" filter="raw" />
+				<field name="retailcrm_site" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_SITE_LABEL" required="true" filter="cmd" />
+				<field name="ozon_product_id_property" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_PRODUCT_ID_PROPERTY_LABEL" default="ozon_product_id" required="true" filter="cmd" />
+				<field name="ozon_sku_property" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_SKU_PROPERTY_LABEL" default="ozon_sku" required="true" filter="cmd" />
+				<field name="retailcrm_price_type" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_PRICE_TYPE_LABEL" default="base" required="true" filter="cmd" />
+				<field name="product_limit" type="number" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_PRODUCT_LIMIT_LABEL" default="1000" min="1" max="10000" filter="integer" />
+				<field name="retailcrm_offer_lookup_limit" type="number" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OFFER_LOOKUP_LIMIT_LABEL" default="10000" min="1" max="100000" filter="integer" />
+			</fieldset>
+			<fieldset name="orders" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELDSET_ORDERS_LABEL">
+				<field name="order_import_limit" type="number" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_ORDER_LIMIT_LABEL" default="10" min="1" max="1000" filter="integer" />
+				<field name="order_lookback_days" type="number" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_ORDER_LOOKBACK_LABEL" default="5" min="1" max="365" filter="integer" />
+				<field name="ozon_order_statuses" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_ORDER_STATUSES_LABEL" default="awaiting_packaging" filter="raw" />
+				<field name="order_currency" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_ORDER_CURRENCY_LABEL" default="RUB" required="true" filter="cmd" />
+				<field name="retailcrm_order_type" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_ORDER_TYPE_LABEL" default="eshop-individual" required="true" filter="cmd" />
+				<field name="retailcrm_order_method" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_ORDER_METHOD_LABEL" default="shopping-cart" required="true" filter="cmd" />
+				<field name="retailcrm_order_status" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_ORDER_STATUS_LABEL" default="new" required="true" filter="cmd" />
+				<field name="retailcrm_marketplace_code" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_MARKETPLACE_CODE_LABEL" filter="cmd" />
+				<field name="retailcrm_ozon_posting_field" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_POSTING_FIELD_LABEL" filter="cmd" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

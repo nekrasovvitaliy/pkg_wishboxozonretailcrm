@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="pkg_wishboxozonretailcrm" default="make" basedir=".">
+	<property name="package" value="pkg_wishboxozonretailcrm.zip" />
+
+	<target name="make" description="Build the Joomla package.">
+		<delete quiet="yes">
+			<fileset dir=".">
+				<include name="${package}" />
+			</fileset>
+		</delete>
+
+		<zip destfile="lib_wishboxozonretailcrm.zip">
+			<fileset dir="./lib_wishboxozonretailcrm">
+				<include name="language/**" />
+				<include name="src/**" />
+				<include name="lib_wishboxozonretailcrm.xml" />
+			</fileset>
+		</zip>
+
+		<zip destfile="plg_task_wishboxozonretailcrm.zip">
+			<fileset dir="./plg_task_wishboxozonretailcrm">
+				<include name="forms/**" />
+				<include name="language/**" />
+				<include name="services/**" />
+				<include name="src/**" />
+				<include name="script.php" />
+				<include name="wishboxozonretailcrm.xml" />
+			</fileset>
+		</zip>
+
+		<zip destfile="plg_webservices_wishboxozonretailcrm.zip">
+			<fileset dir="./plg_webservices_wishboxozonretailcrm">
+				<include name="language/**" />
+				<include name="services/**" />
+				<include name="src/**" />
+				<include name="script.php" />
+				<include name="wishboxozonretailcrm.xml" />
+			</fileset>
+		</zip>
+
+		<zip destfile="${package}">
+			<fileset dir=".">
+				<include name="lib_wishboxozonretailcrm.zip" />
+				<include name="plg_task_wishboxozonretailcrm.zip" />
+				<include name="plg_webservices_wishboxozonretailcrm.zip" />
+				<include name="language/**" />
+				<include name="script.php" />
+				<include name="pkg_wishboxozonretailcrm.xml" />
+			</fileset>
+		</zip>
+
+		<delete quiet="yes">
+			<fileset dir=".">
+				<include name="lib_wishboxozonretailcrm.zip" />
+				<include name="plg_task_wishboxozonretailcrm.zip" />
+				<include name="plg_webservices_wishboxozonretailcrm.zip" />
+			</fileset>
+		</delete>
+	</target>
+</project>
