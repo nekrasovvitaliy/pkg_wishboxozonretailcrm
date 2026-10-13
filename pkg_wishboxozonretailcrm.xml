@@ -14,6 +14,7 @@
 		<language tag="ru-RU">ru-RU/pkg_wishboxozonretailcrm.sys.ini</language>
 	</languages>
 	<files>
+		<file type="component" id="com_wishboxozonretailcrm">com_wishboxozonretailcrm.zip</file>
 		<file type="library" id="wishboxozonretailcrm">lib_wishboxozonretailcrm.zip</file>
 		<file type="plugin" group="task" id="wishboxozonretailcrm">plg_task_wishboxozonretailcrm.zip</file>
 		<file type="plugin" group="webservices" id="wishboxozonretailcrm">plg_webservices_wishboxozonretailcrm.zip</file>

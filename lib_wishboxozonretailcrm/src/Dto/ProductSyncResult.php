@@ -17,16 +17,23 @@ defined('_JEXEC') or die;
  */
 final class ProductSyncResult
 {
-	public int $updated = 0;
-
-	public int $skipped = 0;
-
-	public int $failed = 0;
-
 	/**
-	 * @var list<string>
+	 * Initialise a synchronization result.
+	 *
+	 * @param   int           $updated  Updated product count.
+	 * @param   int           $skipped  Skipped product count.
+	 * @param   int           $failed   Failed product count.
+	 * @param   list<string>  $errors   Synchronization error messages.
+	 *
+	 * @return void
 	 *
 	 * @since 1.0.0
 	 */
-	public array $errors = [];
+	public function __construct(
+		public int $updated = 0,
+		public int $skipped = 0,
+		public int $failed = 0,
+		public array $errors = []
+	) {
+	}
 }

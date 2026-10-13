@@ -1,11 +1,12 @@
 <?php
 /**
  * @copyright   (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @license     GNU General Public License version 2 or later;
+ * @license         GNU General Public License version 2 or later;
  */
 
 namespace Joomla\Plugin\Task\WishboxOzonRetailCrm\Extension;
 
+use Exception;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\Scheduler\Administrator\Event\ExecuteTaskEvent;
@@ -15,8 +16,8 @@ use Joomla\Event\SubscriberInterface;
 use Throwable;
 use WishboxOzonRetailCrmLibrary\Service\OzonOrderImportServiceAwareInterface;
 use WishboxOzonRetailCrmLibrary\Service\OzonOrderImportServiceAwareTrait;
-use WishboxOzonRetailCrmLibrary\Service\OzonProductSyncServiceAwareInterface;
-use WishboxOzonRetailCrmLibrary\Service\OzonProductSyncServiceAwareTrait;
+use WishboxOzonRetailCrmLibrary\Service\RetailCrmToOzonProductSyncServiceAwareInterface;
+use WishboxOzonRetailCrmLibrary\Service\RetailCrmToOzonProductSyncServiceAwareTrait;
 
 defined('_JEXEC') or die;
 
@@ -27,15 +28,15 @@ defined('_JEXEC') or die;
  */
 final class WishboxOzonRetailCrm extends CMSPlugin implements
 	SubscriberInterface,
-	OzonProductSyncServiceAwareInterface,
+	RetailCrmToOzonProductSyncServiceAwareInterface,
 	OzonOrderImportServiceAwareInterface
 {
 	use TaskPluginTrait;
-	use OzonProductSyncServiceAwareTrait;
+	use RetailCrmToOzonProductSyncServiceAwareTrait;
 	use OzonOrderImportServiceAwareTrait;
 
 	protected const array TASKS_MAP = [
-		'plg_task_wishboxozonretailcrm_update_products' => [
+		'plg_task_wishboxozonretailcrm_update_products'   => [
 			'langConstPrefix' => 'PLG_TASK_WISHBOXOZONRETAILCRM_UPDATE_PRODUCTS',
 			'form'            => 'update_products',
 			'method'          => 'updateProducts',
@@ -63,13 +64,22 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 		];
 	}
 
+	/**
+	 * @param   ExecuteTaskEvent  $event
+	 *
+	 * @return int
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
 	private function updateProducts(ExecuteTaskEvent $event): int
 	{
 		try
 		{
 			$params = $event->getArgument('params');
-			$limit = (int) ($params->limit ?? $this->params->get('product_limit', 1000));
-			$result = $this->getOzonProductSyncService()
+			$limit  = (int) ($params->limit ?? $this->params->get('product_limit', 1000));
+			$result = $this->getRetailCrmToOzonProductSyncService()
 				->updateProducts($limit);
 
 			$this->logTask(
@@ -97,12 +107,21 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 		}
 	}
 
+	/**
+	 * @param   ExecuteTaskEvent  $event
+	 *
+	 * @return int
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
 	private function importNewOrders(ExecuteTaskEvent $event): int
 	{
 		try
 		{
 			$params = $event->getArgument('params');
-			$limit = (int) ($params->limit ?? $this->params->get('order_import_limit', 10));
+			$limit  = (int) ($params->limit ?? $this->params->get('order_import_limit', 10));
 			$result = $this->getOzonOrderImportService()
 				->importNewOrders($limit);
 

@@ -9,6 +9,7 @@ Joomla package for synchronising RetailCRM with Ozon Seller. The project follows
 - prevents duplicate imports by the Ozon posting number;
 - supports scheduled Joomla tasks;
 - exposes an optional Ozon push-notification endpoint;
+- registers and monitors the Ozon delivery module in RetailCRM;
 - supports a RetailCRM API proxy token.
 
 ## Requirements
@@ -22,11 +23,26 @@ Joomla package for synchronising RetailCRM with Ozon Seller. The project follows
 ## Installation
 
 1. Install `pkg_wishboxozon.zip`.
-2. Install `pkg_wishboxozonretailcrm.zip` through the Joomla extension installer.
-3. Enable the **Task - WishBox Ozon RetailCRM** plugin.
-4. Configure Ozon and RetailCRM credentials in the plugin settings.
+2. Open **Components → WishBox Ozon** and configure the Ozon connection, warehouse, and currency.
+3. Install `pkg_wishboxozonretailcrm.zip` through the Joomla extension installer.
+4. Enable the **Task - WishBox Ozon RetailCRM** plugin and configure its RetailCRM settings.
 5. Create scheduler tasks for product synchronisation and FBS order import.
 6. If push notifications are required, enable the **Web Services - WishBox Ozon RetailCRM** plugin and configure its token.
+7. Open **Components → WishBox Ozon RetailCRM** and install the RetailCRM integration module.
+
+## RetailCRM integration module
+
+The administrator component reads the current module configuration from RetailCRM and displays one of these states: not installed, installed, update required, or API error. The install/update button sends a protected POST request in Joomla, updates the module through the RetailCRM API, and redirects back to a fresh status check.
+
+RetailCRM credentials are shared with the task plugin. The API key must allow reading and writing integration modules. The registered delivery module follows the legacy `wishboxozonshipping` contract and advertises the `package-label` print form at `/print` relative to the public integration base URL.
+
+The webservices plugin maps this action to:
+
+```text
+POST https://example.com/api/index.php/v1/wishboxozonretailcrm/print
+```
+
+The API controller validates the module `clientId`, reads the legacy `print.deliveryIds` payload, requests a combined PDF from Ozon, and returns it to RetailCRM.
 
 ## RetailCRM offer mapping
 

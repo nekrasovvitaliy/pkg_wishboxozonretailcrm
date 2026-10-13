@@ -1,11 +1,12 @@
 <?php
 /**
  * @copyright   (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @license     GNU General Public License version 2 or later;
+ * @license         GNU General Public License version 2 or later;
  */
 
 namespace Joomla\Plugin\Webservices\WishboxOzonRetailCrm\Extension;
 
+use DateMalformedStringException;
 use Joomla\CMS\Application\ApiApplication;
 use Joomla\CMS\Event\Application\AfterApiRouteEvent;
 use Joomla\CMS\Event\Application\BeforeApiRouteEvent;
@@ -19,10 +20,12 @@ use Throwable;
 use WishboxOzonRetailCrmLibrary\Service\OzonOrderImportServiceAwareInterface;
 use WishboxOzonRetailCrmLibrary\Service\OzonOrderImportServiceAwareTrait;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
 /**
- * Exposes a public Ozon push-notification endpoint.
+ * Exposes Ozon notifications and RetailCRM delivery callbacks.
  *
  * @since 1.0.0
  */
@@ -33,13 +36,18 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 	use OzonOrderImportServiceAwareTrait;
 
 	private const string COMPONENT = 'com_wishboxozonretailcrm';
-	private const string CONTROLLER = 'callback';
-	private const string ROUTE = 'v1/wishboxozonretailcrm/callback';
+	private const string CALLBACK_CONTROLLER = 'callback';
+	private const string CALLBACK_ROUTE = 'v1/wishboxozonretailcrm/callback';
+	private const string PRINT_ROUTE = 'v1/wishboxozonretailcrm/print';
 
 	/**
+	 * Return the subscribed Joomla events.
+	 *
 	 * @return array<string, string>
 	 *
-	 * @since 1.0.0
+	 * @since        1.0.0
+	 *
+	 * @noinspection PhpUnused
 	 */
 	public static function getSubscribedEvents(): array
 	{
@@ -54,14 +62,18 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 	 *
 	 * @param   BeforeApiRouteEvent  $event  API routing event.
 	 *
-	 * @since 1.0.0
+	 * @return void
+	 *
+	 * @since        1.0.0
+	 *
+	 * @noinspection PhpUnused
 	 */
 	public function onBeforeApiRoute(BeforeApiRouteEvent $event): void
 	{
-		$route = new Route(
+		$callbackRoute = new Route(
 			['POST'],
-			self::ROUTE,
-			self::CONTROLLER . '.handle',
+			self::CALLBACK_ROUTE,
+			self::CALLBACK_CONTROLLER . '.handle',
 			[],
 			[
 				'component' => self::COMPONENT,
@@ -69,15 +81,29 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 				'format'    => ['application/json', 'application/vnd.api+json'],
 			]
 		);
-
-		$event->getRouter()
-			->addRoute($route);
+		$printRoute    = new Route(
+			['POST'],
+			self::PRINT_ROUTE,
+			'wishboxozon.print',
+			[],
+			[
+				'component' => self::COMPONENT,
+				'public'    => true,
+			]
+		);
+		$router        = $event->getRouter();
+		$router->addRoute($callbackRoute);
+		$router->addRoute($printRoute);
 	}
 
 	/**
 	 * Handle a matched Ozon callback before Joomla dispatches a controller.
 	 *
 	 * @param   AfterApiRouteEvent  $event  API routing event.
+	 *
+	 * @return void
+	 *
+	 * @throws JsonException
 	 *
 	 * @since 1.0.0
 	 */
@@ -87,7 +113,7 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 
 		if (
 			$app->getInput()->getCmd('option') !== self::COMPONENT
-			|| $app->getInput()->getCmd('controller') !== self::CONTROLLER
+			|| $app->getInput()->getCmd('controller') !== self::CALLBACK_CONTROLLER
 		)
 		{
 			return;
@@ -113,10 +139,17 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 		}
 	}
 
+	/**
+	 * Validate the configured Ozon callback token.
+	 *
+	 * @return void
+	 *
+	 * @since 1.0.0
+	 */
 	private function validateToken(): void
 	{
 		$configuredToken = (string) $this->params->get('webhook_token');
-		$receivedToken = (string) $this->getApplication()->getInput()->getString('token');
+		$receivedToken   = $this->getApplication()->getInput()->getString('token');
 
 		if ($configuredToken === '' || !hash_equals($configuredToken, $receivedToken))
 		{
@@ -124,6 +157,17 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 		}
 	}
 
+	/**
+	 * Process a supported Ozon callback payload.
+	 *
+	 * @param   object  $payload  Decoded callback payload.
+	 *
+	 * @return void
+	 *
+	 * @throws DateMalformedStringException
+	 *
+	 * @since 1.0.0
+	 */
 	private function handlePayload(object $payload): void
 	{
 		$type = (string) ($payload->message_type ?? $payload->type ?? '');
@@ -143,7 +187,11 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 	}
 
 	/**
+	 * Build an Ozon callback acknowledgement.
+	 *
 	 * @return array{version: string, name: string, time: string}
+	 *
+	 * @since 1.0.0
 	 */
 	private function buildResponse(): array
 	{
@@ -155,9 +203,16 @@ final class WishboxOzonRetailCrm extends CMSPlugin implements
 	}
 
 	/**
-	 * @param   array<string, mixed>  $body
+	 * Send a JSON response and close the API application.
+	 *
+	 * @param   array<string, mixed>  $body        Response body.
+	 * @param   int                   $statusCode  HTTP status code.
+	 *
+	 * @return void
 	 *
 	 * @throws JsonException
+	 *
+	 * @since 1.0.0
 	 */
 	private function sendResponse(array $body, int $statusCode = 200): void
 	{

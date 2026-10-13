@@ -17,6 +17,15 @@
 			</fileset>
 		</zip>
 
+		<zip destfile="com_wishboxozonretailcrm.zip">
+			<fileset dir="./com_wishboxozonretailcrm">
+				<include name="administrator/**" />
+				<include name="api/**" />
+				<include name="media/**" />
+				<include name="wishboxozonretailcrm.xml" />
+			</fileset>
+		</zip>
+
 		<zip destfile="plg_task_wishboxozonretailcrm.zip">
 			<fileset dir="./plg_task_wishboxozonretailcrm">
 				<include name="forms/**" />
@@ -40,6 +49,7 @@
 
 		<zip destfile="${package}">
 			<fileset dir=".">
+				<include name="com_wishboxozonretailcrm.zip" />
 				<include name="lib_wishboxozonretailcrm.zip" />
 				<include name="plg_task_wishboxozonretailcrm.zip" />
 				<include name="plg_webservices_wishboxozonretailcrm.zip" />
@@ -51,6 +61,7 @@
 
 		<delete quiet="yes">
 			<fileset dir=".">
+				<include name="com_wishboxozonretailcrm.zip" />
 				<include name="lib_wishboxozonretailcrm.zip" />
 				<include name="plg_task_wishboxozonretailcrm.zip" />
 				<include name="plg_webservices_wishboxozonretailcrm.zip" />

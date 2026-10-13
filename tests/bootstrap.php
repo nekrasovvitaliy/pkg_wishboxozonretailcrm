@@ -23,3 +23,7 @@ class_alias(
 	Tests\Stubs\WishboxOzonLibrary\Service\OzonFbsService::class,
 	WishboxOzonLibrary\Service\OzonFbsService::class
 );
+class_alias(
+	Tests\Stubs\WishboxRetailCrmLibrary\Service\RetailCrmProductService::class,
+	WishboxRetailCrmLibrary\Service\RetailCrmProductService::class
+);

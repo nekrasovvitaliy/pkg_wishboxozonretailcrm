@@ -22,15 +22,8 @@
 		<fields name="params">
 			<fieldset name="ozon" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELDSET_OZON_LABEL">
 				<field name="webhook_token" type="password" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_WEBHOOK_TOKEN_LABEL" description="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_WEBHOOK_TOKEN_DESC" required="true" filter="raw" />
-				<field name="ozon_client_id" type="text" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_OZON_CLIENT_ID_LABEL" required="true" filter="raw" />
-				<field name="ozon_api_key" type="password" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_OZON_API_KEY_LABEL" required="true" filter="raw" />
-				<field name="ozon_api_url" type="url" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_OZON_API_URL_LABEL" default="https://api-seller.ozon.ru" required="true" filter="raw" />
 			</fieldset>
 			<fieldset name="retailcrm" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELDSET_RETAILCRM_LABEL">
-				<field name="retailcrm_api_url" type="url" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_API_URL_LABEL" required="true" filter="raw" />
-				<field name="retailcrm_proxy_token" type="password" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_PROXY_TOKEN_LABEL" filter="raw" />
-				<field name="retailcrm_api_key" type="password" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_API_KEY_LABEL" required="true" filter="raw" />
-				<field name="retailcrm_site" type="text" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_SITE_LABEL" required="true" filter="cmd" />
 				<field name="ozon_sku_property" type="text" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_OZON_SKU_PROPERTY_LABEL" default="ozon_sku" required="true" filter="cmd" />
 				<field name="retailcrm_price_type" type="text" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_PRICE_TYPE_LABEL" default="base" required="true" filter="cmd" />
 				<field name="retailcrm_offer_lookup_limit" type="number" label="PLG_WEBSERVICES_WISHBOXOZONRETAILCRM_FIELD_OFFER_LOOKUP_LIMIT_LABEL" default="10000" min="1" max="100000" filter="integer" />

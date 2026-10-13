@@ -21,13 +21,6 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="ozon" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELDSET_OZON_LABEL">
-				<field name="ozon_client_id" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_CLIENT_ID_LABEL" required="true" filter="raw" />
-				<field name="ozon_api_key" type="password" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_API_KEY_LABEL" required="true" filter="raw" />
-				<field name="ozon_api_url" type="url" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_API_URL_LABEL" default="https://api-seller.ozon.ru" required="true" filter="raw" />
-				<field name="ozon_warehouse_id" type="number" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_WAREHOUSE_ID_LABEL" required="true" min="1" filter="integer" />
-				<field name="ozon_currency_code" type="text" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_OZON_CURRENCY_LABEL" default="RUB" required="true" filter="cmd" />
-			</fieldset>
 			<fieldset name="retailcrm" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELDSET_RETAILCRM_LABEL">
 				<field name="retailcrm_api_url" type="url" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_API_URL_LABEL" required="true" filter="raw" />
 				<field name="retailcrm_proxy_token" type="password" label="PLG_TASK_WISHBOXOZONRETAILCRM_FIELD_RETAILCRM_PROXY_TOKEN_LABEL" filter="raw" />
