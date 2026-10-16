@@ -27,7 +27,7 @@ return new class implements ServiceProviderInterface
 	{
 		$container->set(
 			InstallerScriptInterface::class,
-			new class ($container->get(DatabaseDriver::class)) implements InstallerScriptInterface
+			new readonly class ($container->get(DatabaseDriver::class)) implements InstallerScriptInterface
 			{
 				/**
 				 * Constructor.

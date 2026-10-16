@@ -24,9 +24,9 @@ use RetailCrm\Api\ResourceGroup\Store;
 use RuntimeException;
 use stdClass;
 use WishboxOzonLibrary\Service\OzonFbsService;
-use WishboxOzonRetailCrmLibrary\Repositories\RetailCrmOfferRepository;
-use WishboxOzonRetailCrmLibrary\Repositories\RetailCrmOrderRepository;
 use WishboxOzonRetailCrmLibrary\Service\OzonOrderImportService;
+use WishboxRetailCrmLibrary\Configuration\RetailCrmConfiguration;
+use WishboxRetailCrmLibrary\Service\RetailCrmOrderService;
 
 final class OzonOrderImportServiceTest extends TestCase
 {
@@ -132,8 +132,10 @@ final class OzonOrderImportServiceTest extends TestCase
 
 		return new OzonOrderImportService(
 			$ozonFbsService,
-			new RetailCrmOfferRepository($client, $params),
-			new RetailCrmOrderRepository($client),
+			new RetailCrmOrderService(
+				$client,
+				new RetailCrmConfiguration('', '', '', 'shop')
+			),
 			$params
 		);
 	}

@@ -14,11 +14,11 @@ use WishboxOzonLibrary\Api\OzonApiClient;
 use WishboxOzonLibrary\Service\OzonFbsService;
 use WishboxOzonLibrary\Service\Provider\OzonApiClientProvider;
 use WishboxOzonLibrary\Service\Provider\OzonFbsServiceProvider;
-use WishboxOzonRetailCrmLibrary\Repositories\RetailCrmOfferRepository;
-use WishboxOzonRetailCrmLibrary\Repositories\RetailCrmOrderRepository;
 use WishboxOzonRetailCrmLibrary\Service\OzonOrderImportService;
 use WishboxRetailCrmLibrary\Configuration\RetailCrmConfiguration;
+use WishboxRetailCrmLibrary\Service\Provider\RetailCrmOrderServiceProvider;
 use WishboxRetailCrmLibrary\Service\Provider\RetailCrmServiceProvider;
+use WishboxRetailCrmLibrary\Service\RetailCrmOrderService;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die;
@@ -51,35 +51,13 @@ final class OzonOrderImportServiceProvider implements ServiceProviderInterface
 		$this->registerOzonServices($container);
 		$this->registerRetailCrmServices($container);
 
-		if (!$container->has(RetailCrmOfferRepository::class))
-		{
-			$container->share(
-				RetailCrmOfferRepository::class,
-				static fn (Container $container): RetailCrmOfferRepository => new RetailCrmOfferRepository(
-					$container->get(Client::class),
-					$container->get(self::PARAMS_SERVICE)
-				)
-			);
-		}
-
-		if (!$container->has(RetailCrmOrderRepository::class))
-		{
-			$container->share(
-				RetailCrmOrderRepository::class,
-				static fn (Container $container): RetailCrmOrderRepository => new RetailCrmOrderRepository(
-					$container->get(Client::class)
-				)
-			);
-		}
-
 		if (!$container->has(OzonOrderImportService::class))
 		{
 			$container->share(
 				OzonOrderImportService::class,
 				static fn (Container $container): OzonOrderImportService => new OzonOrderImportService(
 					$container->get(OzonFbsService::class),
-					$container->get(RetailCrmOfferRepository::class),
-					$container->get(RetailCrmOrderRepository::class),
+					$container->get(RetailCrmOrderService::class),
 					$container->get(self::PARAMS_SERVICE)
 				)
 			);
@@ -125,7 +103,8 @@ final class OzonOrderImportServiceProvider implements ServiceProviderInterface
 	 */
 	private function registerRetailCrmServices(Container $container): void
 	{
-		if (!class_exists(RetailCrmServiceProvider::class))
+		if (!class_exists(RetailCrmServiceProvider::class)
+			|| !class_exists(RetailCrmOrderServiceProvider::class))
 		{
 			throw new RuntimeException('The WishBox RetailCRM library must be installed before enabling this plugin.');
 		}
@@ -133,6 +112,11 @@ final class OzonOrderImportServiceProvider implements ServiceProviderInterface
 		if (!$container->has(Client::class) || !$container->has(RetailCrmConfiguration::class))
 		{
 			$container->registerServiceProvider(new RetailCrmServiceProvider());
+		}
+
+		if (!$container->has(RetailCrmOrderService::class))
+		{
+			$container->registerServiceProvider(new RetailCrmOrderServiceProvider());
 		}
 	}
 }

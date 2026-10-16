@@ -7,6 +7,12 @@
 define('_JEXEC', 1);
 
 require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__, 2) . '/pkg_wishbox_j4/lib_wishbox/src/Dto/OrderImport/MarketplaceOrderDelivery.php';
+require dirname(__DIR__, 2) . '/pkg_wishbox_j4/lib_wishbox/src/Dto/OrderImport/MarketplaceOrderItem.php';
+require dirname(__DIR__, 2) . '/pkg_wishbox_j4/lib_wishbox/src/Dto/OrderImport/MarketplaceOrder.php';
+require dirname(__DIR__, 2) . '/pkg_wishbox_j4/lib_wishbox/src/Dto/OrderImport/OrderImportResult.php';
+require dirname(__DIR__, 2) . '/pkg_wishboxretailcrm/lib_wishboxretailcrm/src/Configuration/RetailCrmConfiguration.php';
+require dirname(__DIR__, 2) . '/pkg_wishboxretailcrm/lib_wishboxretailcrm/src/Service/RetailCrmOrderService.php';
 
 $environmentFileDirectory = dirname(__DIR__);
 

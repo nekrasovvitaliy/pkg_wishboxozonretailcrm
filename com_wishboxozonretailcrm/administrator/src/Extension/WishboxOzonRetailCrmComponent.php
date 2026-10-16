@@ -7,6 +7,8 @@
 namespace Joomla\Component\WishboxOzonRetailCrm\Administrator\Extension;
 
 use Joomla\CMS\Extension\MVCComponent;
+use WishboxOzonRetailCrmLibrary\Service\OzonOrderShipmentServiceAwareInterface;
+use WishboxOzonRetailCrmLibrary\Service\OzonOrderShipmentServiceAwareTrait;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die;
@@ -17,6 +19,7 @@ defined('_JEXEC') or die;
  *
  * @since 1.0.0
  */
-final class WishboxOzonRetailCrmComponent extends MVCComponent
+final class WishboxOzonRetailCrmComponent extends MVCComponent implements OzonOrderShipmentServiceAwareInterface
 {
+	use OzonOrderShipmentServiceAwareTrait;
 }
